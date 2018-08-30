@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+
+$composerAutoload = [
+    __DIR__ . '/../vendor/autoload.php', // in yii2-dev repo
+    __DIR__ . '/../../autoload.php', // installed as a composer binary
+];
+$vendorPath = null;
+foreach ($composerAutoload as $autoload) {
+    if (file_exists($autoload)) {
+        require $autoload;
+        $vendorPath = dirname($autoload);
+        break;
+    }
+}
+
+
+require __DIR__ . '/../src/Yii.php';
+
+$config = require_once 'config/console.php';
+
+$application = new yii\console\Application($config);
+$exitCode = $application->run();
+exit($exitCode);
