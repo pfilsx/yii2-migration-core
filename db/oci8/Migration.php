@@ -53,7 +53,6 @@ class Migration extends \yii\db\Migration
         $columns = $uppedColumns;
 
         parent::createTable($table, $columns, $options);
-        $this->createAutoIncrements($table, $columns);
         $this->createComments($table, $columns);
     }
 
@@ -75,19 +74,6 @@ class Migration extends \yii\db\Migration
     public function dropTable($table)
     {
         $table = strtoupper($table);
-
-        $tableSchema = $this->db->getTableSchema($table);
-        if ($tableSchema === null) {
-            throw new InvalidArgumentException("Unknown table: $table");
-        }
-
-        if (
-            $tableSchema->sequenceName !== null &&
-            $tableSchema->sequenceName == "SEQ_{$tableSchema->name}_ID"
-        ) {
-            $this->execute("DROP SEQUENCE \"SEQ_{$tableSchema->name}_ID\"");
-        }
-
         parent::dropTable($table);
     }
 
