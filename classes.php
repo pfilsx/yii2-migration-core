@@ -180,7 +180,6 @@ return [
     'yii\db\oci\Schema' => YII2_PATH . '/db/oci/Schema.php',
     'yii\db\oci\conditions\InConditionBuilder' => YII2_PATH . '/db/oci/conditions/InConditionBuilder.php',
     'yii\db\oci\conditions\LikeConditionBuilder' => YII2_PATH . '/db/oci/conditions/LikeConditionBuilder.php',
-    'yii\db\oci8\ColumnSchemaBuilder' => YII2_PATH . '/db/oci8/ColumnSchemaBuilder.php',
     'yii\db\oci8\Command' => YII2_PATH . '/db/oci8/Command.php',
     'yii\db\oci8\exceptions\Oci8Exception' => YII2_PATH . '/db/oci8/exceptions/Oci8Exception.php',
     'yii\db\oci8\Migration' => YII2_PATH . '/db/oci8/Migration.php',

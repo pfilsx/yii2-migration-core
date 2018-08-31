@@ -53,7 +53,6 @@ class Migration extends \yii\db\Migration
         $columns = $uppedColumns;
 
         parent::createTable($table, $columns, $options);
-
         $this->createComments($table, $columns);
     }
 
@@ -131,16 +130,17 @@ class Migration extends \yii\db\Migration
         } catch (Exception $e) {
             $currentPackageSql = null;
         }
-
-        $this->execute($headFileContent);
-        $this->execute($bodyFileContent);
-
         $this->db->createCommand()->insert($this->migratePackagesTable, [
             'version' => get_class($this),
             'apply_time' => time(),
             'package' => $uppedPackage,
             'backup' => $currentPackageSql
         ])->execute();
+
+        $this->execute($headFileContent);
+        $this->execute($bodyFileContent);
+
+
 
     }
 

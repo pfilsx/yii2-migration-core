@@ -4,6 +4,8 @@
 namespace yii\db\oci8;
 
 
+use yii\db\oci\ColumnSchemaBuilder;
+
 class Schema extends \yii\db\oci\Schema
 {
     /**

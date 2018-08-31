@@ -146,6 +146,7 @@ class ColumnSchemaBuilder extends BaseObject
         $this->autoIncrement = true;
         return $this;
     }
+
     /**
      * Adds a `NOT NULL` constraint to the column.
      * @return $this
