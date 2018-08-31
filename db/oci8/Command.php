@@ -21,9 +21,8 @@ class Command extends \yii\db\Command
                     $table
                 ))->execute();
                 $columns[$key]->comment = '_autoIncremented';
-            }
-            $result = $this->db->createCommand(sprintf(
-                '
+                $result = $this->db->createCommand(sprintf(
+                    '
                         CREATE OR REPLACE TRIGGER "TRG_%s_ID"
                            BEFORE INSERT ON "%s"
                            FOR EACH ROW
@@ -35,8 +34,9 @@ class Command extends \yii\db\Command
                            END IF;
                         END;
                     ',
-                $table, $table, $key, $table, $key
-            ));
+                    $table, $table, $key, $table, $key
+                ));
+            }
         }
         parent::createTable($table, $columns, $options)->execute();
         return $result;
