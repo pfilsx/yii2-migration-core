@@ -20,10 +20,14 @@ Yii2-migration-core - ядро миграций от Yii2 фреймворка
     "secure-http": false
 }
 ```
+Конфигурирование
+------------------
+Стандартное конфигурирование yii2-console проекта(https://www.yiiframework.com/doc/guide/2.0/ru/concept-configurations#application-configurations)
 
 Использование
 ---------------
-https://www.yiiframework.com/doc/guide/2.0/ru/db-migrations
+1. https://www.yiiframework.com/doc/guide/2.0/ru/db-migrations
+2. Дополнительные возможности yii2-oracle-pack(autoIncrement(), createPackage(), updatePackage(), undoPackage(), ...)
 
 Особенности
 ---------------
