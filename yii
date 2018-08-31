@@ -24,11 +24,11 @@ foreach ($composerAutoload as $autoload) {
 }
 
 
-require __DIR__ . '/Yii.php';
+require __DIR__ . '/vendor/filimonov/yii2-migration-core/Yii.php';
 
 $application = new yii\console\Application([
     'id' => 'yii-console',
-    'basePath' => __DIR__ . '/console',
+    'basePath' => __DIR__,
     'controllerNamespace' => 'yii\console\controllers',
 ]);
 if ($vendorPath !== null) {
