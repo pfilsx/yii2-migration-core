@@ -13,15 +13,17 @@ class Command extends \yii\db\Command
      * @inheritdoc
      */
     public function createTable($table, $columns, $options = null){
-        $result = parent::createTable($table, $columns, $options);
+        $result = null;
         foreach ($columns as $key => $column) {
             if (is_object($column) && $column->autoIncrement === true) {
                 $this->db->createCommand(sprintf(
                     'CREATE SEQUENCE "SEQ_%s_ID" MINVALUE 1 START WITH 1 INCREMENT BY 1 NOCACHE',
                     $table
                 ))->execute();
-                $this->db->createCommand(sprintf(
-                    '
+                $columns[$key]->comment = '_autoIncremented';
+            }
+            $result = $this->db->createCommand(sprintf(
+                '
                         CREATE OR REPLACE TRIGGER "TRG_%s_ID"
                            BEFORE INSERT ON "%s"
                            FOR EACH ROW
@@ -33,11 +35,10 @@ class Command extends \yii\db\Command
                            END IF;
                         END;
                     ',
-                    $table, $table, $key, $table, $key
-                ));
-                $columns[$key]->comment = '_autoIncremented';
-            }
+                $table, $table, $key, $table, $key
+            ));
         }
+        parent::createTable($table, $columns, $options)->execute();
         return $result;
     }
 

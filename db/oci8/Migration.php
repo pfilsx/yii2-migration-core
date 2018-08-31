@@ -53,6 +53,7 @@ class Migration extends \yii\db\Migration
         $columns = $uppedColumns;
 
         parent::createTable($table, $columns, $options);
+
         $this->createComments($table, $columns);
     }
 
