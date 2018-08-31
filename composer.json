@@ -1,5 +1,5 @@
 {
-    "name": "filimonov/yii2-migration-core-dev",
+    "name": "filimonov/yii2-migration-core",
     "description": "Yii PHP Framework Migration Edition",
     "keywords": [
         "yii2",
@@ -31,10 +31,10 @@
         "cebe/markdown": "~1.0.0 | ~1.1.0"
     },
     "autoload": {
-        "psr-4": {"yii\\": "src/"}
+        "psr-4": {"yii\\": ""}
     },
     "bin": [
-        "src/yii"
+        "yii"
     ],
     "extra": {
         "branch-alias": {
