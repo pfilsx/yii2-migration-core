@@ -579,7 +579,7 @@ class Inflector
     public static function sentence(array $words, $twoWordsConnector = null, $lastWordConnector = null, $connector = ', ')
     {
         if ($twoWordsConnector === null) {
-            $twoWordsConnector = Yii::t('yii', ' and ');
+            $twoWordsConnector = ' and ';
         }
         if ($lastWordConnector === null) {
             $lastWordConnector = $twoWordsConnector;

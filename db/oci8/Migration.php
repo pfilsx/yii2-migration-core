@@ -417,38 +417,6 @@ class Migration extends \yii\db\Migration
      * @param string $table
      * @param array $columns
      */
-    private function createAutoIncrements($table, $columns)
-    {
-        foreach ($columns as $key => $column) {
-            if (is_object($column) && $column->autoIncrement === true) {
-                $this->execute(sprintf(
-                    'CREATE SEQUENCE "SEQ_%s_ID" MINVALUE 1 START WITH 1 INCREMENT BY 1 NOCACHE',
-                    $table
-                ));
-                $this->execute(sprintf(
-                    '
-                        CREATE OR REPLACE TRIGGER "TRG_%s_ID"
-                           BEFORE INSERT ON "%s"
-                           FOR EACH ROW
-                        BEGIN
-                           IF INSERTING THEN
-                              IF :NEW."%s" IS NULL THEN
-                                 SELECT SEQ_%s_ID.NEXTVAL INTO :NEW."%s" FROM DUAL;
-                              END IF;
-                           END IF;
-                        END;
-                    ',
-                    $table, $table, $key, $table, $key
-                ));
-                $columns[$key]->comment = '_autoIncremented';
-            }
-        }
-    }
-
-    /**
-     * @param string $table
-     * @param array $columns
-     */
     private function createComments($table, $columns)
     {
         foreach ($columns as $key => $column) {

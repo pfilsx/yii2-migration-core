@@ -105,7 +105,7 @@ class Controller extends \yii\base\Controller
                     if (array_key_exists($name, $optionAliases)) {
                         $params[$optionAliases[$name]] = $value;
                     } else {
-                        throw new Exception(Yii::t('yii', 'Unknown alias: -{name}', ['name' => $name]));
+                        throw new Exception(strtr('Unknown alias: -{name}', ['{name}' => $name]));
                     }
                 }
                 unset($params['_aliases']);
@@ -136,7 +136,7 @@ class Controller extends \yii\base\Controller
                         unset($params[$kebabName]);
                     }
                 } elseif (!is_int($name)) {
-                    throw new Exception(Yii::t('yii', 'Unknown option: --{name}', ['name' => $name]));
+                    throw new Exception(strtr('Unknown option: --{name}', ['{name}' => $name]));
                 }
             }
         }
@@ -183,7 +183,7 @@ class Controller extends \yii\base\Controller
         }
 
         if (!empty($missing)) {
-            throw new Exception(Yii::t('yii', 'Missing required arguments: {params}', ['params' => implode(', ', $missing)]));
+            throw new Exception(strtr('Missing required arguments: {params}', ['{params}' => implode(', ', $missing)]));
         }
 
         return $args;

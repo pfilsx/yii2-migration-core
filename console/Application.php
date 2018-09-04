@@ -194,6 +194,7 @@ class Application extends \yii\base\Application
             'cache' => 'yii\console\controllers\CacheController',
             'help' => 'yii\console\controllers\HelpController',
             'migrate' => 'yii\console\controllers\MigrateController',
+            'prepare-packages' => 'yii\console\controllers\PreparePackagesController'
         ];
     }
 

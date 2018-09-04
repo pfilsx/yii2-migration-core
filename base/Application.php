@@ -23,8 +23,6 @@ use Yii;
  * @property \yii\db\Connection $db The database connection. This property is read-only.
  * @property \yii\console\ErrorHandler $errorHandler The error handler application
  * component. This property is read-only.
- * @property \yii\i18n\Formatter $formatter The formatter application component. This property is read-only.
- * @property \yii\i18n\I18N $i18n The internationalization application component. This property is read-only.
  * @property \yii\log\Dispatcher $log The log dispatcher application component. This property is read-only.
  * @property \yii\console\Request $request The request component. This property is read-only.
  * @property \yii\console\Response $response The response component. This property is
@@ -523,15 +521,6 @@ abstract class Application extends Module
     }
 
     /**
-     * Returns the formatter component.
-     * @return \yii\i18n\Formatter the formatter application component.
-     */
-    public function getFormatter()
-    {
-        return $this->get('formatter');
-    }
-
-    /**
      * Returns the request component.
      * @return \yii\console\Request the request component.
      */
@@ -556,15 +545,6 @@ abstract class Application extends Module
     public function getView()
     {
         return $this->get('view');
-    }
-
-    /**
-     * Returns the internationalization (i18n) component.
-     * @return \yii\i18n\I18N the internationalization application component.
-     */
-    public function getI18n()
-    {
-        return $this->get('i18n');
     }
 
     /**

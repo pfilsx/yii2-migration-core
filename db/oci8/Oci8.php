@@ -489,18 +489,6 @@ class Oci8 extends PDO {
     }
 
     /**
-     * Check if statement can use pseudo named parameter.
-     *
-     * @param string $statement
-     * @return bool
-     */
-    private function isNamedParameterable($statement)
-    {
-        return ! preg_match('/^alter+ +table/', strtolower(trim($statement)))
-            and ! preg_match('/^create+ +table/', strtolower(trim($statement)));
-    }
-
-    /**
      * Connect to database.
      *
      * @param string $dsn
@@ -529,7 +517,7 @@ class Oci8 extends PDO {
      *
      * @param string $charset charset
      *
-     * @return charset
+     * @return string charset
      */
     private function _getCharset($charset=null)
     {
