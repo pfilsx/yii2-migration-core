@@ -103,7 +103,7 @@ class PreparePackagesController extends Controller
     protected function getPackagesList(){
         $migrationPaths = [];
         if (is_array($this->migrationPath)) {
-            $migrationPaths[] = $this->migrationPath;
+            $migrationPaths = $this->migrationPath;
         } elseif (!empty($this->migrationPath)) {
             $migrationPaths[] = $this->migrationPath;
         }
