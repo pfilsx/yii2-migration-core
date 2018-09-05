@@ -78,12 +78,12 @@ class PreparePackagesController extends Controller
             $this->stdout("No packages.install found.\n", Console::FG_GREEN);
             return ExitCode::OK;
         }
-        $n = count($packages);
+        $packagesNames = array_filter($packages, function($package){
+            return strpos(strtolower($package), '_body') === false;
+        });
+        $n = count($packagesNames);
         $this->stdout("Total $n " . ($n === 1 ? 'package' : 'packages') . " to be prepared:\n", Console::FG_YELLOW);
-        foreach ($packages as $package) {
-            if (strpos($package, '_BODY') !== false){
-                continue;
-            }
+        foreach ($packagesNames as $package) {
             $this->stdout("\t$package\n");
         }
         $this->stdout("\n");
