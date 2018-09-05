@@ -4,13 +4,9 @@
 namespace yii\console\controllers;
 
 use Yii;
-use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
-use yii\base\NotSupportedException;
 use yii\console\Controller;
-use yii\console\Exception;
 use yii\console\ExitCode;
-use yii\db\MigrationInterface;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
 
@@ -18,14 +14,30 @@ class PreparePackagesController extends Controller
 {
     public $migrationPath = ['@app/migrations'];
 
+    public $env = 'prod';
+
     public $defaultAction = 'prepare';
+
+    protected $replaceValues = [];
 
     public function options($actionID)
     {
         return array_merge(
             parent::options($actionID),
-            ['migrationPath']
+            ['migrationPath', 'env']
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     * @since 2.0.8
+     */
+    public function optionAliases()
+    {
+        return array_merge(parent::optionAliases(), [
+            'p' => 'migrationPath',
+            'e' => 'env'
+        ]);
     }
 
     public function beforeAction($action)
@@ -46,6 +58,10 @@ class PreparePackagesController extends Controller
                 }
                 $this->migrationPath = $path;
             }
+
+            $this->replaceValues = array_key_exists($this->env, Yii::$app->params)
+                ? Yii::$app->params[$this->env]
+                : Yii::$app->params;
 
             $version = Yii::getVersion();
             $this->stdout("Yii Packages Tool (based on Yii v{$version})\n\n");
@@ -88,8 +104,8 @@ class PreparePackagesController extends Controller
             while (($line = fgets($handleInput)) !== false){
 
                 $line = preg_replace_callback('/\{([^\}]+)\}/i', function($matches){
-                    if (array_key_exists($matches[1],Yii::$app->params)){
-                        return Yii::$app->params[$matches[1]];
+                    if (array_key_exists($matches[1], $this->replaceValues)){
+                        return $this->replaceValues[$matches[1]];
                     }
                     return $matches[0];
                 }, $line);
