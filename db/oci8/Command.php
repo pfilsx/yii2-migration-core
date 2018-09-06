@@ -38,7 +38,11 @@ class Command extends \yii\db\Command
                 ));
             }
         }
-        parent::createTable($table, $columns, $options)->execute();
+         if ($result == null) {
+             $result = parent::createTable($table, $columns, $options);
+         } else {
+             parent::createTable($table, $columns, $options)->execute();
+         };
         return $result;
     }
 
