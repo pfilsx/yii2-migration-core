@@ -34,9 +34,7 @@ class Migration extends \yii\db\Migration
     }
 
     /**
-     * @param string $table
-     * @param array $columns
-     * @param null $options
+     * @inheritdoc
      */
     public function createTable($table, $columns, $options = null)
     {
@@ -56,12 +54,18 @@ class Migration extends \yii\db\Migration
         $this->createComments($table, $columns);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function addColumn($table, $column, $type)
     {
         parent::addColumn($table, $column, $type);
         $this->createComments($table, [$column => $type]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function alterColumn($table, $column, $type)
     {
         parent::alterColumn($table, $column, $type);
@@ -69,7 +73,7 @@ class Migration extends \yii\db\Migration
     }
 
     /**
-     * @param string $table
+     * @inheritdoc
      */
     public function dropTable($table)
     {
@@ -79,16 +83,13 @@ class Migration extends \yii\db\Migration
 
 
     /**
-     * @param string $package
+     * Create package from sql file
+     * @param string $package - package name(filename, like PKG_REPORTS)
      * @throws ErrorException
      */
     public function createPackage($package)
     {
-        $fileName = $package;
-        if (strpos(strtoupper($package), 'PKG_') !== 0) {
-            $fileName = 'PKG_' . $fileName;
-        }
-        $uppedPackage = strtoupper($fileName);
+        $uppedPackage = strtoupper($package);
         $headFileContent = $this->getFileContent($this->packagesDirectory, $uppedPackage);
         $bodyFileContent = $this->getFileContent($this->packagesDirectory, $uppedPackage . '_BODY');
         $this->execute($headFileContent);
@@ -96,30 +97,24 @@ class Migration extends \yii\db\Migration
     }
 
     /**
-     * @param string $package
+     * Drop package from db
+     * @param string $package - package name(filename, like PKG_REPORTS)
      */
     public function dropPackage($package)
     {
-        $fileName = $package;
-        if (strpos(strtoupper($package), 'PKG_') !== 0) {
-            $fileName = 'PKG_' . $fileName;
-        }
-        $this->execute(sprintf('DROP PACKAGE %s', strtoupper($fileName)));
+        $this->execute(sprintf('DROP PACKAGE %s', strtoupper($package)));
     }
 
     /**
-     * @param string $package
+     * Update package to new version
+     * @param string $package - package name(filename, like PKG_REPORTS)
      * @throws ErrorException
      * @throws Exception
      * @throws \yii\db\Exception
      */
     public function updatePackage($package)
     {
-        $fileName = $package;
-        if (strpos(strtoupper($package), 'PKG_') !== 0) {
-            $fileName = 'PKG_' . $fileName;
-        }
-        $uppedPackage = strtoupper($fileName);
+        $uppedPackage = strtoupper($package);
         $headFileContent = $this->getFileContent($this->packagesDirectory, $uppedPackage);
         $bodyFileContent = $this->getFileContent($this->packagesDirectory, $uppedPackage . '_BODY');
 
@@ -145,15 +140,12 @@ class Migration extends \yii\db\Migration
     }
 
     /**
-     * @param string $package
+     * Downgrade package to backup
+     * @param string $package - package name(like PKG_REPORTS)
      */
     public function undoPackage($package)
     {
-        $fileName = $package;
-        if (strpos(strtoupper($package), 'PKG_') !== 0) {
-            $fileName = 'PKG_' . $fileName;
-        }
-        $uppedPackage = strtoupper($fileName);
+        $uppedPackage = strtoupper($package);
         $version = get_class($this);
 
         $backupPackage = (new Query())
@@ -183,23 +175,27 @@ class Migration extends \yii\db\Migration
 
     }
 
+    /**
+     *
+     * @param $function
+     * @throws ErrorException
+     * @see Migration::createPackage()
+     */
     public function createFunction($function)
     {
-        $fileName = $function;
-        if (strpos(strtoupper($function), 'FNC_') !== 0) {
-            $fileName = 'FNC_' . $fileName;
-        }
-        $functionFileContent = $this->getFileContent($this->functionsDirectory, strtoupper($fileName));
+        $functionFileContent = $this->getFileContent($this->functionsDirectory, strtoupper($function));
         $this->execute($functionFileContent);
     }
 
+    /**
+     * @param $function
+     * @throws ErrorException
+     * @throws Exception
+     * @see Migration::updatePackage()
+     */
     public function updateFunction($function)
     {
-        $fileName = $function;
-        if (strpos(strtoupper($function), 'FNC_') !== 0) {
-            $fileName = 'FNC_' . $fileName;
-        }
-        $uppedFunction = strtoupper($fileName);
+        $uppedFunction = strtoupper($function);
         $functionFileContent = $this->getFileContent($this->functionsDirectory, $uppedFunction);
 
         try {
@@ -219,13 +215,14 @@ class Migration extends \yii\db\Migration
         $this->execute($functionFileContent);
     }
 
+    /**
+     * @param $function
+     * @throws ErrorException
+     * @see Migration::undoPackage()
+     */
     public function undoFunction($function)
     {
-        $fileName = $function;
-        if (strpos(strtoupper($function), 'FNC_') !== 0) {
-            $fileName = 'FNC_' . $fileName;
-        }
-        $uppedFunction = strtoupper($fileName);
+        $uppedFunction = strtoupper($function);
         $version = get_class($this);
 
         $backupFunction = (new Query())
@@ -247,32 +244,35 @@ class Migration extends \yii\db\Migration
         ));
     }
 
-    public function deleteFunction($function)
+    /**
+     * @param $function
+     * @see Migration::dropPackage()
+     */
+    public function dropFunction($function)
     {
-        $fileName = $function;
-        if (strpos(strtoupper($function), 'FNC_') !== 0) {
-            $fileName = 'FNC_' . $fileName;
-        }
-        $this->execute(sprintf('DROP FUNCTION %s', strtoupper($fileName)));
+        $this->execute(sprintf('DROP FUNCTION %s', strtoupper($function)));
     }
 
+    /**
+     * @param $procedure
+     * @throws ErrorException
+     * @see Migration::createPackage()
+     */
     public function createProcedure($procedure)
     {
-        $fileName = $procedure;
-        if (strpos(strtoupper($procedure), 'SP_') !== 0) {
-            $fileName = 'SP_' . $fileName;
-        }
-        $procedureFileContent = $this->getFileContent($this->proceduresDirectory, strtoupper($fileName));
+        $procedureFileContent = $this->getFileContent($this->proceduresDirectory, strtoupper($procedure));
         $this->execute($procedureFileContent);
     }
 
+    /**
+     * @param $procedure
+     * @throws ErrorException
+     * @throws Exception
+     * @see Migration::updatePackage()
+     */
     public function updateProcedure($procedure)
     {
-        $fileName = $procedure;
-        if (strpos(strtoupper($procedure), 'SP_') !== 0) {
-            $fileName = 'SP_' . $fileName;
-        }
-        $uppedProcedure = strtoupper($fileName);
+        $uppedProcedure = strtoupper($procedure);
         $procedureFileContent = $this->getFileContent($this->proceduresDirectory, $uppedProcedure);
 
         try {
@@ -292,13 +292,14 @@ class Migration extends \yii\db\Migration
         $this->execute($procedureFileContent);
     }
 
+    /**
+     * @param $procedure
+     * @throws ErrorException
+     * @see Migration::undoPackage()
+     */
     public function undoProcedure($procedure)
     {
-        $fileName = $procedure;
-        if (strpos(strtoupper($procedure), 'SP_') !== 0) {
-            $fileName = 'SP_' . $fileName;
-        }
-        $uppedProcedure = strtoupper($fileName);
+        $uppedProcedure = strtoupper($procedure);
         $version = get_class($this);
 
         $backupProcedure = (new Query())
@@ -320,38 +321,32 @@ class Migration extends \yii\db\Migration
         ));
     }
 
-    public function deleteProcedure($procedure)
+    /**
+     * @param $procedure
+     * @see Migration::dropPackage()
+     */
+    public function dropProcedure($procedure)
     {
-        $fileName = $procedure;
-        if (strpos(strtoupper($procedure), 'SP_') !== 0) {
-            $fileName = 'SP_' . $fileName;
-        }
-        $this->execute(sprintf('DROP PROCEDURE %s', strtoupper($fileName)));
+        $this->execute(sprintf('DROP PROCEDURE %s', strtoupper($procedure)));
     }
 
     /**
      * @param $view
+     * @see Migration::createPackage()
      */
     public function createView($view)
     {
-        $fileName = $view;
-        if (strpos(strtoupper($view), 'VW_') !== 0) {
-            $fileName = 'VW_' . $fileName;
-        }
-        $viewFileContent = $this->getFileContent($this->viewsDirectory, strtoupper($fileName));
+        $viewFileContent = $this->getFileContent($this->viewsDirectory, strtoupper($view));
         $this->execute($viewFileContent);
     }
 
     /**
      * @param $view
+     * @see Migration::updatePackage()
      */
     public function updateView($view)
     {
-        $fileName = $view;
-        if (strpos(strtoupper($view), 'VW_') !== 0) {
-            $fileName = 'VW_' . $fileName;
-        }
-        $uppedView = strtoupper($fileName);
+        $uppedView = strtoupper($view);
         $viewFileContent = $this->getFileContent($this->viewsDirectory, $uppedView);
 
         try {
@@ -372,14 +367,11 @@ class Migration extends \yii\db\Migration
 
     /**
      * @param $view
+     * @see Migration::undoPackage()
      */
     public function undoView($view)
     {
-        $fileName = $view;
-        if (strpos(strtoupper($view), 'VW_') !== 0) {
-            $fileName = 'VW_' . $fileName;
-        }
-        $uppedView = strtoupper($fileName);
+        $uppedView = strtoupper($view);
         $version = get_class($this);
 
         $backupView = (new Query())
@@ -403,14 +395,11 @@ class Migration extends \yii\db\Migration
 
     /**
      * @param $view
+     * @see Migration::dropPackage()
      */
-    public function deleteView($view)
+    public function dropView($view)
     {
-        $fileName = $view;
-        if (strpos(strtoupper($view), 'VW_') !== 0) {
-            $fileName = 'VW_' . $fileName;
-        }
-        $this->execute(sprintf('DROP VIEW %s', strtoupper($fileName)));
+        $this->execute(sprintf('DROP VIEW %s', strtoupper($view)));
     }
 
     /**
