@@ -138,7 +138,7 @@ abstract class BaseMigrateController extends Controller
             }
 
             $version = Yii::getVersion();
-            $this->stdout("Yii Migration Tool (based on Yii v{$version})\n\n");
+            $this->stdout("Yii Migration Core Tool (based on Yii v{$version}, modified by p.filimonov)\n\n");
 
             return true;
         }

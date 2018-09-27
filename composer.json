@@ -1,6 +1,6 @@
 {
     "name": "filimonov/yii2-migration-core",
-    "description": "Yii PHP Framework Migration Edition",
+    "description": "Yii PHP Framework Migration Core",
     "keywords": [
         "yii2",
         "framework",
@@ -13,14 +13,16 @@
         {
             "name": "Pavel Filimonov",
             "email": "p.filimonov@newcontact.su"
+        },
+        {
+            "name": "Pavel Filimonov",
+            "email": "pfilsx@gmail.com"
         }
     ],
     "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "http://www.yiiframework.com/forum/",
+        "issues": "http://gitlab.newcontact.su/p.filimonov/yii2-migration-core/issues",
         "wiki": "http://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "source": "http://gitlab.newcontact.su/p.filimonov/yii2-migration-core"
     },
     "require": {
         "php": ">=5.4.0",
