@@ -16,6 +16,7 @@ class Command extends \yii\db\Command
         $result = parent::createTable($table, $columns, $options);
         foreach ($columns as $key => $column) {
             if (is_object($column) && $column->autoIncrement === true) {
+                $result->execute();
                 $this->db->createCommand(sprintf(
                     'CREATE SEQUENCE "SEQ_%s_ID" MINVALUE 1 START WITH 1 INCREMENT BY 1 NOCACHE',
                     $table
@@ -35,6 +36,7 @@ class Command extends \yii\db\Command
                     ',
                     $table, $table, $key, $table, $key
                 ));
+                break;
             }
         }
         return $result;
