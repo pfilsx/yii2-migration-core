@@ -20,7 +20,6 @@ class Command extends \yii\db\Command
                     'CREATE SEQUENCE "SEQ_%s_ID" MINVALUE 1 START WITH 1 INCREMENT BY 1 NOCACHE',
                     $table
                 ))->execute();
-                $columns[$key]->comment = '_autoIncremented';
                 $result = $this->db->createCommand(sprintf(
                     '
                         CREATE OR REPLACE TRIGGER "TRG_%s_ID"

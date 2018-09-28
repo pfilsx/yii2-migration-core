@@ -105,6 +105,7 @@ class ColumnSchemaBuilder extends BaseObject
         Schema::TYPE_BINARY => self::CATEGORY_OTHER,
         Schema::TYPE_BOOLEAN => self::CATEGORY_NUMERIC,
         Schema::TYPE_MONEY => self::CATEGORY_NUMERIC,
+        Schema::TYPE_INTERVAL => self::CATEGORY_OTHER
     ];
     /**
      * @var \yii\db\Connection the current database connection. It is used mainly to escape strings
@@ -144,6 +145,7 @@ class ColumnSchemaBuilder extends BaseObject
     public function autoIncrement()
     {
         $this->autoIncrement = true;
+        $this->comment = '_autoIncremented';
         return $this;
     }
 

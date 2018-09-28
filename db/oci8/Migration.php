@@ -51,27 +51,7 @@ class Migration extends \yii\db\Migration
         $columns = $uppedColumns;
 
         parent::createTable($table, $columns, $options);
-        $this->createComments($table, $columns);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function addColumn($table, $column, $type)
-    {
-        parent::addColumn($table, $column, $type);
-        $this->createComments($table, [$column => $type]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function alterColumn($table, $column, $type)
-    {
-        parent::alterColumn($table, $column, $type);
-        $this->createComments($table, [$column => $type]);
-    }
-
     /**
      * @inheritdoc
      */
@@ -402,17 +382,11 @@ class Migration extends \yii\db\Migration
         $this->execute(sprintf('DROP VIEW %s', strtoupper($view)));
     }
 
-    /**
-     * @param string $table
-     * @param array $columns
-     */
-    private function createComments($table, $columns)
-    {
-        foreach ($columns as $key => $column) {
-            if (!empty($column->comment)) {
-                $this->execute(sprintf('COMMENT ON COLUMN "%s"."%s" IS \'%s\'', $table, $key, $column->comment));
-            }
-        }
+    public function interval($from = 'DAY', $to = 'SECOND'){
+        $from = strtoupper($from);
+        $to = strtoupper($to);
+        return $this->getDb()->getSchema()
+            ->createColumnSchemaBuilder(Schema::TYPE_INTERVAL, "$from TO $to");
     }
 
     /**
@@ -439,5 +413,4 @@ class Migration extends \yii\db\Migration
         }
         throw new ErrorException('File not found: ' . $file);
     }
-
 }
