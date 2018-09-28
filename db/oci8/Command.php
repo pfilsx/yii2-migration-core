@@ -6,7 +6,13 @@ namespace yii\db\oci8;
 
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\db\Connection;
 
+/**
+ * Class Command
+ * @package yii\db\oci8
+ *
+ */
 class Command extends \yii\db\Command
 {
     /**
@@ -17,10 +23,8 @@ class Command extends \yii\db\Command
         foreach ($columns as $key => $column) {
             if (is_object($column) && $column->autoIncrement === true) {
                 $result->execute();
-                $this->db->createCommand(sprintf(
-                    'CREATE SEQUENCE "SEQ_%s_ID" MINVALUE 1 START WITH 1 INCREMENT BY 1 NOCACHE',
-                    $table
-                ))->execute();
+                $sql = $this->db->getQueryBuilder()->createSequence("SEQ_{$table}_ID");
+                $this->db->createCommand($sql)->execute();
                 $result = $this->db->createCommand(sprintf(
                     '
                         CREATE OR REPLACE TRIGGER "TRG_%s_ID"
@@ -53,9 +57,9 @@ class Command extends \yii\db\Command
 
         if (
             $tableSchema->sequenceName !== null &&
-            $tableSchema->sequenceName == "SEQ_{$tableSchema->name}_ID"
+            $tableSchema->sequenceName == "SEQ_{$table}_ID"
         ) {
-            $this->db->createCommand("DROP SEQUENCE \"SEQ_{$tableSchema->name}_ID\"")->execute();
+            $this->db->createCommand($this->db->getQueryBuilder()->dropSequence("SEQ_{$table}_ID"))->execute();
         }
         return parent::dropTable($table);
     }

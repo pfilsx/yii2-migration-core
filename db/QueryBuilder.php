@@ -1039,6 +1039,28 @@ class QueryBuilder extends \yii\base\BaseObject
     {
         throw new NotSupportedException($this->db->getDriverName() . ' does not support resetting sequence.');
     }
+    /**
+     * Builds a SQL statement for creating a sequence.
+     * @param $name - name of sequence
+     * @param int $start - start value
+     * @param int $increment - increment size
+     * @param string|int $max - max value
+     * @param string|int $cache - cache size
+     * @return string the SQL statement for creating sequence
+     * @throws NotSupportedException if this is not supported by the underlying DBMS
+     */
+    public function createSequence($name, $start = 1, $increment = 1, $max = 'NOMAXVALUE', $cache = 'NOCACHE'){
+        throw new NotSupportedException($this->db->getDriverName() . ' does not support creating sequence.');
+    }
+    /**
+     * Builds a SQL statement for drop a sequence.
+     * @param $name - name of sequence
+     * @return string the SQL statement for drop sequence
+     * NotSupportedException if this is not supported by the underlying DBMS
+     */
+    public function dropSequence($name){
+        throw new NotSupportedException($this->db->getDriverName() . ' does not support drop sequence.');
+    }
 
     /**
      * Builds a SQL statement for enabling or disabling integrity check.
