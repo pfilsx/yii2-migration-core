@@ -6,21 +6,25 @@ namespace yii\db\oci8;
 
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\db\Connection;
 
+/**
+ * Class Command
+ * @package yii\db\oci8
+ *
+ */
 class Command extends \yii\db\Command
 {
     /**
      * @inheritdoc
      */
     public function createTable($table, $columns, $options = null){
-        $result = null;
+        $result = parent::createTable($table, $columns, $options);
         foreach ($columns as $key => $column) {
             if (is_object($column) && $column->autoIncrement === true) {
-                $this->db->createCommand(sprintf(
-                    'CREATE SEQUENCE "SEQ_%s_ID" MINVALUE 1 START WITH 1 INCREMENT BY 1 NOCACHE',
-                    $table
-                ))->execute();
-                $columns[$key]->comment = '_autoIncremented';
+                $result->execute();
+                $sql = $this->db->getQueryBuilder()->createSequence("SEQ_{$table}_ID");
+                $this->db->createCommand($sql)->execute();
                 $result = $this->db->createCommand(sprintf(
                     '
                         CREATE OR REPLACE TRIGGER "TRG_%s_ID"
@@ -36,13 +40,9 @@ class Command extends \yii\db\Command
                     ',
                     $table, $table, $key, $table, $key
                 ));
+                break;
             }
         }
-         if ($result == null) {
-             $result = parent::createTable($table, $columns, $options);
-         } else {
-             parent::createTable($table, $columns, $options)->execute();
-         };
         return $result;
     }
 
@@ -57,9 +57,9 @@ class Command extends \yii\db\Command
 
         if (
             $tableSchema->sequenceName !== null &&
-            $tableSchema->sequenceName == "SEQ_{$tableSchema->name}_ID"
+            $tableSchema->sequenceName == "SEQ_{$table}_ID"
         ) {
-            $this->db->createCommand("DROP SEQUENCE \"SEQ_{$tableSchema->name}_ID\"")->execute();
+            $this->db->createCommand($this->db->getQueryBuilder()->dropSequence("SEQ_{$table}_ID"))->execute();
         }
         return parent::dropTable($table);
     }

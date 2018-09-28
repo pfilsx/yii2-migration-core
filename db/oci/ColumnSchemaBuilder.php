@@ -38,6 +38,9 @@ class ColumnSchemaBuilder extends AbstractColumnSchemaBuilder
             case self::CATEGORY_NUMERIC:
                 $format = '{type}{length}{unsigned}{default}{notnull}{check}{append}';
                 break;
+            case self::CATEGORY_INTERVAL:
+                $format = '{type}{append}{default}{notnull}{check}';
+                break;
             default:
                 $format = '{type}{length}{default}{notnull}{check}{append}';
         }
