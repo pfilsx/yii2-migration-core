@@ -386,7 +386,7 @@ class Migration extends \yii\db\Migration
         $from = strtoupper($from);
         $to = strtoupper($to);
         return $this->getDb()->getSchema()
-            ->createColumnSchemaBuilder(Schema::TYPE_INTERVAL, "$from TO $to");
+            ->createColumnSchemaBuilder(Schema::TYPE_INTERVAL)->append("$from TO $to");
     }
 
     /**
