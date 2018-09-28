@@ -13,7 +13,7 @@ class Command extends \yii\db\Command
      * @inheritdoc
      */
     public function createTable($table, $columns, $options = null){
-        $result = null;
+        $result = parent::createTable($table, $columns, $options);
         foreach ($columns as $key => $column) {
             if (is_object($column) && $column->autoIncrement === true) {
                 $this->db->createCommand(sprintf(
@@ -37,11 +37,6 @@ class Command extends \yii\db\Command
                 ));
             }
         }
-         if ($result == null) {
-             $result = parent::createTable($table, $columns, $options);
-         } else {
-             parent::createTable($table, $columns, $options)->execute();
-         };
         return $result;
     }
 
