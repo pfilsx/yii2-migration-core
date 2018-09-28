@@ -64,7 +64,7 @@ class PreparePackagesController extends Controller
                 : Yii::$app->params;
 
             $version = Yii::getVersion();
-            $this->stdout("Yii Packages Tool (based on Yii v{$version})\n\n");
+            $this->stdout("Yii Packages Tool (based on Yii v{$version}, modified by Filimonov)\n\n");
 
             return true;
         }
