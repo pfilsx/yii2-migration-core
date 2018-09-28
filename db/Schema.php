@@ -64,6 +64,7 @@ abstract class Schema extends BaseObject
     const TYPE_BOOLEAN = 'boolean';
     const TYPE_MONEY = 'money';
     const TYPE_JSON = 'json';
+    const TYPE_INTERVAL = 'interval';
     /**
      * Schema cache version, to detect incompatibilities in cached values when the
      * data format of the cache changes.

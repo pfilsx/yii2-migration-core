@@ -12,42 +12,17 @@ class QueryBuilder extends \yii\db\oci\QueryBuilder
     /**
      * @inheritdoc
      */
-    public function createSequence($table, $value = null)
-    {
-        $tableSchema = $this->db->getTableSchema($table);
-        if ($tableSchema === null) {
-            throw new InvalidArgumentException("Unknown table: $table");
-        }
-        if ($tableSchema->sequenceName === null) {
-            return '';
-        }
-
-        if ($value !== null) {
-            $value = (int) $value;
-        } else {
-            // use master connection to get the biggest PK value
-            $value = $this->db->useMaster(function (Connection $db) use ($tableSchema) {
-                    return $db->createCommand("SELECT MAX(\"{$tableSchema->primaryKey}\") FROM \"{$tableSchema->name}\"")->queryScalar();
-                }) + 1;
-        }
-
-        return "CREATE SEQUENCE \"SEQ_{$tableSchema->name}_ID\" START WITH {$value} INCREMENT BY 1 NOMAXVALUE NOCACHE";
+    public function createSequence($name, $start = 1, $increment = 1, $max = 'NOMAXVALUE', $cache = 'NOCACHE'){
+        return 'CREATE SEQUENCE '.$this->db->quoteTableName($name).' START WITH '.$this->db->quoteValue($start)
+            . '  INCREMENT BY '.$this->db->quoteValue($increment). ' ' . (is_int($max) ? 'MAXVALUE '. $max : $max)
+            . ' '. (is_int($cache) ? 'CACHE '. $cache : $cache);
     }
 
     /**
      * @inheritdoc
      */
-    public function dropSequence($table)
-    {
-        $tableSchema = $this->db->getTableSchema($table);
-        if ($tableSchema === null) {
-            throw new InvalidArgumentException("Unknown table: $table");
-        }
-        if ($tableSchema->sequenceName === null) {
-            return '';
-        }
-
-        return "DROP SEQUENCE \"SEQ_{$tableSchema->name}_ID\"";
+    public function dropSequence($name){
+        return "DROP SEQUENCE {$this->db->quoteTableName($name)}";
     }
 
     /**
