@@ -1267,17 +1267,30 @@ class Command extends Component
             }
         }
     }
-
-    public function createSequence($table, $value = null)
+    /**
+     * Builds a SQL statement for creating a sequence.
+     * @param $name - name of sequence
+     * @param int $start - start value
+     * @param int $increment - increment size
+     * @param string|int $max - max value
+     * @param string|int $cache - cache size
+     * @return $this
+     */
+    public function createSequence($name, $start = 1, $increment = 1, $max = 'NOMAXVALUE', $cache = 'NOCACHE')
     {
-        $sql = $this->db->getQueryBuilder()->createSequence($table, $value);
+        $sql = $this->db->getQueryBuilder()->createSequence($name, $start, $increment, $max, $cache);
 
         return $this->setSql($sql);
     }
 
-    public function dropSequence($table)
+    /**
+     * Builds a SQL statement for drop a sequence.
+     * @param $name - name of sequence
+     * @return $this
+     */
+    public function dropSequence($name)
     {
-        $sql = $this->db->getQueryBuilder()->dropSequence($table);
+        $sql = $this->db->getQueryBuilder()->dropSequence($name);
 
         return $this->setSql($sql);
     }

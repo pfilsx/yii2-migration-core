@@ -382,11 +382,41 @@ class Migration extends \yii\db\Migration
         $this->execute(sprintf('DROP VIEW %s', strtoupper($view)));
     }
 
+    /**
+     * Creates a interval column.
+     * @param string $from
+     * @param string $to
+     * @return \yii\db\ColumnSchemaBuilder
+     * @throws \yii\base\NotSupportedException
+     */
     public function interval($from = 'DAY', $to = 'SECOND'){
         $from = strtoupper($from);
         $to = strtoupper($to);
         return $this->getDb()->getSchema()
             ->createColumnSchemaBuilder(Schema::TYPE_INTERVAL)->append("$from TO $to");
+    }
+
+    /**
+     * Builds and executes a SQL statement for creating a sequence.
+     * @param $name - name of sequence
+     * @param int $start - start value
+     * @param int $increment - increment size
+     * @param string|int $max - max value
+     * @param string|int $cache - cache size
+     */
+    public function createSequence($name, $start = 1, $increment = 1, $max = 'NOMAXVALUE', $cache = 'NOCACHE'){
+        $time = $this->beginCommand("create sequence $name");
+        $this->db->createCommand()->createSequence($name, $start, $increment, $max, $cache)->execute();
+        $this->endCommand($time);
+    }
+    /**
+     * Builds and executes a SQL statement for drop a sequence.
+     * @param $name - name of sequence
+     */
+    public function dropSequence($name){
+        $time = $this->beginCommand("drop sequence $name");
+        $this->db->createCommand()->dropSequence($name)->execute();
+        $this->endCommand($time);
     }
 
     /**
