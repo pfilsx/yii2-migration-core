@@ -23,8 +23,7 @@ class Command extends \yii\db\Command
         foreach ($columns as $key => $column) {
             if (is_object($column) && $column->autoIncrement === true) {
                 $result->execute();
-                $sql = $this->db->getQueryBuilder()->createSequence("SEQ_{$table}_ID");
-                $this->db->createCommand($sql)->execute();
+                $this->db->createCommand()->createSequence("SEQ_{$table}_ID")->execute();
                 $result = $this->db->createCommand(sprintf(
                     '
                         CREATE OR REPLACE TRIGGER "TRG_%s_ID"
@@ -59,7 +58,7 @@ class Command extends \yii\db\Command
             $tableSchema->sequenceName !== null &&
             $tableSchema->sequenceName == "SEQ_{$table}_ID"
         ) {
-            $this->db->createCommand($this->db->getQueryBuilder()->dropSequence("SEQ_{$table}_ID"))->execute();
+            $this->db->createCommand()->dropSequence("SEQ_{$table}_ID")->execute();
         }
         return parent::dropTable($table);
     }
