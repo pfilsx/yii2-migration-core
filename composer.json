@@ -1,5 +1,5 @@
 {
-    "name": "filimonov/yii2-migration-core",
+    "name": "pfilsx/yii2-migration-core",
     "description": "Yii PHP Framework Migration Core",
     "keywords": [
         "yii2",
@@ -11,8 +11,8 @@
     "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "Pavel Filimonov",
-            "email": "p.filimonov@newcontact.su"
+            "name": "Yii2 Contributors",
+            "homepage": "http://www.yiiframework.com/"
         },
         {
             "name": "Pavel Filimonov",
@@ -20,9 +20,9 @@
         }
     ],
     "support": {
-        "issues": "http://gitlab.newcontact.su/p.filimonov/yii2-migration-core/issues",
+        "issues": "https://github.com/pfilsx/yii2-migration-core/issues",
         "wiki": "http://www.yiiframework.com/wiki/",
-        "source": "http://gitlab.newcontact.su/p.filimonov/yii2-migration-core"
+        "source": "https://github.com/pfilsx/yii2-migration-core"
     },
     "require": {
         "php": ">=5.4.0",
@@ -37,10 +37,5 @@
     },
     "bin": [
         "yii"
-    ],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0.x-dev"
-        }
-    }
+    ]
 }
