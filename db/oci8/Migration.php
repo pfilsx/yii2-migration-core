@@ -140,7 +140,7 @@ class Migration extends \yii\db\Migration
         $backupPackageSql = $backupPackage['backup'];
 
         // check body exists
-        $packageComponents = preg_split('/CREATE\s+OR\s+REPLACE\s+PACKAGE\s+BODY/', $backupPackageSql);
+        $packageComponents = preg_split('/CREATE\s+OR\s+REPLACE\s+(?:EDITIONABLE\s+)?PACKAGE\s+BODY/', $backupPackageSql);
 
         $this->execute(trim($packageComponents[0]));
 
